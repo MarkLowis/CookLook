@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookLook", "CookLook\CookLook.csproj", "{DCFBEE7C-197F-4F21-A1E5-BBFBEB9CC391}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookLookUnitTests", "CookLookUnitTests\CookLookUnitTests.csproj", "{90D4ADED-A6CD-41C2-A3E0-5CFA02431F64}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCFBEE7C-197F-4F21-A1E5-BBFBEB9CC391}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCFBEE7C-197F-4F21-A1E5-BBFBEB9CC391}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCFBEE7C-197F-4F21-A1E5-BBFBEB9CC391}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCFBEE7C-197F-4F21-A1E5-BBFBEB9CC391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90D4ADED-A6CD-41C2-A3E0-5CFA02431F64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90D4ADED-A6CD-41C2-A3E0-5CFA02431F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90D4ADED-A6CD-41C2-A3E0-5CFA02431F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90D4ADED-A6CD-41C2-A3E0-5CFA02431F64}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38C6CDAA-561D-4105-BCE0-AD8E46F4D9AC}
+	EndGlobalSection
+EndGlobal
