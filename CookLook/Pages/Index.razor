@@ -5,7 +5,11 @@
 
 <h1>Search for a recipe</h1>
 
-@if (recipes == null)
+@if (searching == true)
+{    
+    <p><em>Loading...</em></p>
+}
+else if ( recipes == null)
 {
     <p><em>Waiting for your delicious input...</em></p>
 }
@@ -15,7 +19,7 @@ else
         <tbody>
             @foreach (var hit in recipes.Hits)
             {
-            <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
+                <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
                 <td>
                     <h3>@hit.Recipe.Label</h3>
                     <div>From <a href="@hit.Recipe.Url" target="_blank">@hit.Recipe.Source</a></div>
@@ -45,19 +49,64 @@ else
 }
 <input type="text" @bind-value="@searchTerm" />
 <input type="button" value="Search" @onclick="@SearchRecipes" />
+<div>
+    <label>Number to display:</label>
+    <select @bind="@numberOfRecipes">
+        @for (int i = 5; i < 26; i += 5)
+        {
+            <option value="@i">
+                @i
+            </option>
+        }
+    </select>
+</div>
+<div class="row">
+    <div class="col-2">
+        <input type="checkbox" id="Vegetarian" name="Vegetarian" value="Vegetarian" bind="@vegetarian" />
+        <label for="Vegetarian">Vegetarian</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Vegan" name="Vegan" value="Vegan" bind="@vegan" />
+        <label for="Vegan">Vegan</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Nut-Free" name="Nut-Free" value="Nut-Free" bind="@nutFree" />
+        <label for="Nut-Free">Nut-Free</label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-2">
+        <input type="checkbox" id="Dairy-Free" name="Dairy-Free" value="Dairy-Free" bind="@dairyFree" />
+        <label for="Dairy-Free">Dairy-Free</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Gluten-Free" name="Gluten-Free" value="Gluten-Free" bind="@glutenFree" />
+        <label for="Gluten-Free">Gluten-Free</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="No Seafood" name="No Seafood" value="No Seafood" bind="@seafoodFree" />
+        <label for="No Seafood">No Seafood</label>
+    </div>
+</div>
 
+    @code {
 
+        private bool vegetarian = false;
+        private bool vegan = false;
+        private bool nutFree = false;
+        private bool dairyFree = false;
+        private bool glutenFree = false;
+        private bool seafoodFree = false;
 
+        private int numberOfRecipes = 5;
+        private string searchTerm;
+        private bool searching = false;
+        private RecipeList recipes;
 
-
-@code {
-
-
-    private string searchTerm;
-    private RecipeList recipes;
-
-    async Task SearchRecipes()
-    {
-        recipes = await recipeSearchService.SearchRecipesAsync(searchTerm);
+        async Task SearchRecipes()
+        {
+            searching = true;
+            recipes = await recipeSearchService.SearchRecipesAsync(searchTerm, numberOfRecipes);
+            searching = false;
+        }
     }
-}
