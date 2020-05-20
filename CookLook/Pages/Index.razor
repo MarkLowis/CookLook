@@ -19,11 +19,12 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var recipie in recipes)
+            @foreach (var hit in recipes.Hits)
             {
                 <tr>
-                    <td>@recipie.Label</td>
-                    <td>@recipie.Url</td>
+                    <td>@hit.Recipe.Label</td>
+                    <td><a href="@hit.Recipe.Url" target="_blank">@hit.Recipe.Url</a></td>
+                  
                 </tr>
             }
         </tbody>
@@ -33,14 +34,14 @@ else
 <input type="button" value="Search" @onclick="@SearchRecipes" />
 
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
 
 
 @code {
 
 
     private string searchTerm;
-    private List<Recipe> recipes;
+    private RecipeList recipes;
 
     async Task SearchRecipes()
     {
