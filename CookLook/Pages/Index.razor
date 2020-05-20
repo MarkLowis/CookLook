@@ -16,20 +16,33 @@ else if ( recipes == null)
 else
 {
     <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>URL</th>
-            </tr>
-        </thead>
         <tbody>
             @foreach (var hit in recipes.Hits)
             {
-                <tr>
-                    <td>@hit.Recipe.Label</td>
-                    <td><a href="@hit.Recipe.Url" target="_blank">@hit.Recipe.Url</a></td>
-
-                </tr>
+                <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
+                <td>
+                    <h3>@hit.Recipe.Label</h3>
+                    <div>From <a href="@hit.Recipe.Url" target="_blank">@hit.Recipe.Source</a></div>
+                    <div>Serves: @hit.Recipe.Yield</div>
+                    <div>
+                        Ingredients:  <br>
+                        @foreach (var ingredient in hit.Recipe.Ingredients)
+                        {
+                            @ingredient.Text
+                            <br>
+                        }
+                    </div>
+                    <div style="font-size:10px;display: inline-block;vertical-align:bottom;">
+                        @foreach (var label in hit.Recipe.HealthLabels)
+                        {
+                            @label
+                            <span>&nbsp</span>
+                        }
+                    </div>
+                </td>
+                <td><img src="@hit.Recipe.Image"></td>
+                
+            </tr>
             }
         </tbody>
     </table>
