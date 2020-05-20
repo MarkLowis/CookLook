@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CookLook.Models
 {
-    class RecipeList
+    public class RecipeList
     {
         public int ChosenRecipe { get; set; }
         public string Q { get; set; }

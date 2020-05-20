@@ -8,7 +8,7 @@ namespace CookLook.Services
 {
     interface IRecipeSearchService
     {
-        Task<List<Recipe>> SearchRecipesAsync(string searchterm);
+        Task<RecipeList> SearchRecipesAsync(string searchTerm);
 
     }
 }
