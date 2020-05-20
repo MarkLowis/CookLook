@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CookLook.Areas.Identity;
 using CookLook.Data;
+using CookLook.Services;
 
 namespace CookLook
 {
@@ -40,6 +41,7 @@ namespace CookLook
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<IRecipeSearchService, RecipeSearchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
