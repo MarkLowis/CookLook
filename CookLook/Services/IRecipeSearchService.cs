@@ -10,5 +10,6 @@ namespace CookLook.Services
     {
         Task<RecipeList> SearchRecipesAsync(string searchTerm, int numberOfRecipes, bool[] conditions);
 
+        Task<RandomRecipe> GenerateRandomRecipe();
     }
 }

@@ -1,16 +1,48 @@
 ﻿@page "/counter"
+@using CookLook.Models;
+@using CookLook.Services;
+@inject IRecipeSearchService recipeSearchService;
 
-<h1>Counter</h1>
+<h1>Generate a delicious recipe!</h1>
 
-<p>Current count: @currentCount</p>
+<input type="button" value="RandomRecipe" @onclick="@RandomRecipe" />
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+@if (searching == true)
+{
+    <p><em>Loading...</em></p>
+}
+else if (recipe != null)
+{
+    <table class="table">
+        <tbody>
+                <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
+                    <td>
+                        <h2>@recipe.Name</h2>
+
+                        <div>
+                            Ingredients:  <br>
+                            @foreach (var ingredient in recipe.Ingredients)
+                            {
+                                <h4> @ingredient.Text </h4>                               
+                                <h5> @ingredient.Weight g</h5>      
+                                <br>
+                            }
+                        </div>
+                    </td>
+                    <td><img src="@recipe.Image"></td>
+                </tr>
+        </tbody>
+    </table>
+}
 
 @code {
-    private int currentCount = 0;
+    private RandomRecipe recipe;
+    private bool searching = false;
 
-    private void IncrementCount()
+    async Task RandomRecipe()
     {
-        currentCount++;
+        searching = true;
+        recipe = await recipeSearchService.GenerateRandomRecipe();
+        searching = false;
     }
 }
