@@ -75,7 +75,7 @@ namespace CookLook.Services
             {
                 var searchResult = await client.DownloadStringTaskAsync("https://www.googleapis.com/customsearch/v1?key=AIzaSyAqwYETDhyrgfi0WnBbUowiZd7l8ea-voc&cx=013804392218156844819:ymg35lhfayb&searchType=image&num=1&start=1&imgSize=medium" + DownloadLink);
                 ImageSearch imageResult = JsonSerializer.Deserialize<ImageSearch>(searchResult, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-                return imageResult.items[0].link;
+                return imageResult.Items[0].Link;
             }
 
 
