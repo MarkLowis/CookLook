@@ -5,48 +5,7 @@
 
 <h1>Search for a recipe</h1>
 
-@if (searching == true)
-{    
-    <p><em>Loading...</em></p>
-}
-else if ( recipes == null)
-{
-    <p><em>Waiting for your delicious input...</em></p>
-}
-else
-{
-    <table class="table">
-        <tbody>
-            @foreach (var hit in recipes.Hits)
-            {
-                <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
-                <td>
-                    <h3>@hit.Recipe.Label</h3>
-                    <div>From <a href="@hit.Recipe.Url" target="_blank">@hit.Recipe.Source</a></div>
-                    <div>Serves: @hit.Recipe.Yield</div>
-                    <div>
-                        Ingredients:  <br>
-                        @foreach (var ingredient in hit.Recipe.Ingredients)
-                        {
-                            @ingredient.Text
-                            <br>
-                        }
-                    </div>
-                    <div style="font-size:10px;display:inline-block;vertical-align:bottom;">
-                        @foreach (var label in hit.Recipe.HealthLabels)
-                        {
-                            @label
-                            <span>&nbsp</span>
-                        }
-                    </div>
-                </td>
-                <td><img src="@hit.Recipe.Image"></td>
-                
-            </tr>
-            }
-        </tbody>
-    </table>
-}
+
 <input type="text" @bind-value="@searchTerm" />
 <input type="button" value="Search" @onclick="@SearchRecipes" />
 <div>
@@ -103,27 +62,68 @@ else
     </div>
 </div>
 
-    @code {
+@if (searching == true)
+{
+    <p><em>Loading...</em></p>
+}
+else if (recipes != null)
+{
+    <table class="table">
+        <tbody>
+            @foreach (var hit in recipes.Hits)
+            {
+                <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
+                    <td>
+                        <h3>@hit.Recipe.Label</h3>
+                        <div>From <a href="@hit.Recipe.Url" target="_blank">@hit.Recipe.Source</a></div>
+                        <div>Serves: @hit.Recipe.Yield</div>
+                        <div>
+                            Ingredients:  <br>
+                            @foreach (var ingredient in hit.Recipe.Ingredients)
+                            {
+                                @ingredient.Text
+                                <br>
 
-        private bool vegetarian;
-        private bool vegan;
-        private bool peanutFree;
-        private bool treenutfree;
-        private bool sugar;
-        private bool alcohol;
-        private bool protein;
-        private bool fat;
-        private bool carbs;
+                            }
+                        </div>
+                        <div style="font-size:10px;display:inline-block;vertical-align:bottom;">
+                            @foreach (var label in hit.Recipe.HealthLabels)
+                            {
+                                @label
+                                <span>&nbsp</span>
+                            }
+                        </div>
+                    </td>
+                    <td><img src="@hit.Recipe.Image"></td>
 
-        private int numberOfRecipes = 5;
-        private string searchTerm;
-        private bool searching = false;
-        private RecipeList recipes;
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
-        async Task SearchRecipes()
-        {
-            searching = true;
-            recipes = await recipeSearchService.SearchRecipesAsync(searchTerm, numberOfRecipes, new bool[] {vegetarian,vegan,peanutFree,treenutfree,sugar,alcohol,protein,fat,carbs});
-            searching = false;
-        }
+@code {
+
+    private bool vegetarian;
+    private bool vegan;
+    private bool peanutFree;
+    private bool treenutfree;
+    private bool sugar;
+    private bool alcohol;
+    private bool protein;
+    private bool fat;
+    private bool carbs;
+
+    private int numberOfRecipes = 5;
+    private string searchTerm;
+    private bool searching = false;
+    private RecipeList recipes;
+
+    async Task SearchRecipes()
+    {
+        searching = true;
+        recipes = await recipeSearchService.SearchRecipesAsync(searchTerm, numberOfRecipes, new bool[] { vegetarian, vegan, peanutFree, treenutfree, sugar, alcohol, protein, fat, carbs });
+        searching = false;
     }
+
+}
