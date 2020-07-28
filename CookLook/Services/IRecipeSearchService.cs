@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace CookLook.Services
 {
-    interface IRecipeSearchService
+    public interface IRecipeSearchService
     {
         Task<RecipeList> SearchRecipesAsync(string searchTerm, int numberOfRecipes, bool[] conditions);
+
+        Task<string> SearchGoogleForImage(string searchTerm);
 
         Task<RandomRecipe> GenerateRandomRecipe();
     }

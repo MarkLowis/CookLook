@@ -12,9 +12,16 @@ namespace CookLook.Services
 {
     public class RecipeSearchService : IRecipeSearchService
     {
+        IApiInterface apiInterface;
+        public RecipeSearchService(IApiInterface apiInterface)
+        {
+            this.apiInterface = apiInterface;
+        }
+
         public async Task<RecipeList> SearchRecipesAsync(string searchTerm, int numberOfRecipes, bool[] health)
         {
             var DownloadLink = "";
+            DownloadLink += numberOfRecipes;
             if (health.Contains(true))
             {
                 if (health[0]) DownloadLink += "&health=vegetarian";
@@ -28,12 +35,10 @@ namespace CookLook.Services
                 if (health[8]) DownloadLink += "&diet=low-carb";
             }
             DownloadLink += "&q=" + searchTerm.Replace("  ", " ").Trim().Replace(" ", "+");
-            using (var client = new WebClient())
-            {
-                var recipeJson = await client.DownloadStringTaskAsync("https://api.edamam.com/search?app_id=084c75ba&app_key=dc0c53baf15766be071aa494ecd8fae6&to=" + numberOfRecipes + DownloadLink);
-                RecipeList recipeList = JsonSerializer.Deserialize<RecipeList>(recipeJson, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-                return recipeList;
-            }
+
+            var recipeJson = await apiInterface.CallRecipeApi(DownloadLink);
+            RecipeList recipeList = JsonSerializer.Deserialize<RecipeList>(recipeJson, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            return recipeList;
         }
 
         public async Task<List<string>> ImportIngredientList()
@@ -71,12 +76,10 @@ namespace CookLook.Services
         public async Task<string> SearchGoogleForImage(string searchTerm)
         {
             var DownloadLink = "&q=" + searchTerm.Replace("  ", " ").Trim().Replace(" ", "+");
-            using (var client = new WebClient())
-            {
-                var searchResult = await client.DownloadStringTaskAsync("https://www.googleapis.com/customsearch/v1?key=AIzaSyAqwYETDhyrgfi0WnBbUowiZd7l8ea-voc&cx=013804392218156844819:ymg35lhfayb&searchType=image&num=1&start=1&imgSize=medium" + DownloadLink);
-                ImageSearch imageResult = JsonSerializer.Deserialize<ImageSearch>(searchResult, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-                return imageResult.Items[0].Link;
-            }
+            var searchResult = await apiInterface.CallGoogleImageApi(DownloadLink);
+            ImageSearch imageResult = JsonSerializer.Deserialize<ImageSearch>(searchResult, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            return imageResult.Items[0].Link;
+            
 
 
         }

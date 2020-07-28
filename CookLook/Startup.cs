@@ -41,7 +41,8 @@ namespace CookLook
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<IRecipeSearchService, RecipeSearchService>();
+            services.AddSingleton<IApiInterface, ApiInterface>();
+            services.AddSingleton<IRecipeSearchService, RecipeSearchService>();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
