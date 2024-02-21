@@ -1,0 +1,48 @@
+﻿@page "/counter"
+@using CookLook.Models;
+@using CookLook.Services;
+@inject IRecipeSearchService recipeSearchService;
+
+<h1>Generate a delicious recipe!</h1>
+
+<input type="button" value="RandomRecipe" @onclick="@RandomRecipe" />
+
+@if (searching == true)
+{
+    <p><em>Loading...</em></p>
+}
+else if (recipe != null)
+{
+    <table class="table">
+        <tbody>
+                <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
+                    <td>
+                        <h2>@recipe.Name</h2>
+
+                        <div>
+                            Ingredients:  <br>
+                            @foreach (var ingredient in recipe.Ingredients)
+                            {
+                                <h4> @ingredient.Text </h4>                               
+                                <h5> @ingredient.Weight g</h5>      
+                                <br>
+                            }
+                        </div>
+                    </td>
+                    <td><img src="@recipe.Image"></td>
+                </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private RandomRecipe recipe;
+    private bool searching = false;
+
+    async Task RandomRecipe()
+    {
+        searching = true;
+        recipe = await recipeSearchService.GenerateRandomRecipe();
+        searching = false;
+    }
+}

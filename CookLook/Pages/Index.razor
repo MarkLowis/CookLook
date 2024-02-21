@@ -1,0 +1,129 @@
+﻿@using CookLook.Models;
+@using CookLook.Services;
+@page "/"
+@inject IRecipeSearchService recipeSearchService;
+
+<h1>Search for a recipe</h1>
+
+
+<input type="text" @bind-value="@searchTerm" />
+<input type="button" value="Search" @onclick="@SearchRecipes" />
+<div>
+    <label>Number to display:</label>
+    <select @bind="@numberOfRecipes">
+        @for (int i = 5; i < 26; i += 5)
+        {
+            <option value="@i">
+                @i
+            </option>
+        }
+    </select>
+</div>
+<div class="row">
+    <div class="col-2">
+        <input type="checkbox" id="Vegetarian" name="Vegetarian" value="Vegetarian" @bind="@vegetarian" />
+        <label for="Vegetarian">Vegetarian</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Vegan" name="Vegan" value="Vegan" @bind="@vegan" />
+        <label for="Vegan">Vegan</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Peanut-Free" name="Peanut-Free" value="Peanut-Free" @bind="@peanutFree" />
+        <label for="Peanut-Free">Peanut-Free</label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-2">
+        <input type="checkbox" id="Nut-Free" name="Nut-Free" value="Nut-Free" @bind="@treenutfree" />
+        <label for="Nut-Free">Nut-Free</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Low Sugar" name="Low Sugar" value="Low Sugar" @bind="@sugar" />
+        <label for="Low Sugar">Low Sugar</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Alcohol-Free" name="Alcohol-Free" value="Alcohol-Free" @bind="@alcohol" />
+        <label for="Alcohol-Free">Alcohol-Free</label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-2">
+        <input type="checkbox" id="High Protein" name="High Protein" value="High Protein" @bind="@protein" />
+        <label for="High Protein">High Protein</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Low Fat" name="Low Fat" value="Low Fat" @bind="@fat" />
+        <label for="Low Fat">Low Fat</label>
+    </div>
+    <div class="col-2">
+        <input type="checkbox" id="Low Carbs" name="Low Carbs" value="Low Carbs" @bind="@carbs" />
+        <label for="Low Carbs">Low Carbs</label>
+    </div>
+</div>
+
+@if (searching == true)
+{
+    <p><em>Loading...</em></p>
+}
+else if (recipes != null)
+{
+    <table class="table">
+        <tbody>
+            @foreach (var hit in recipes.Hits)
+            {
+                <tr style="background-color:#add8e6;border-color:#41B3A3;border:solid;">
+                    <td>
+                        <h3>@hit.Recipe.Label</h3>
+                        <div>From <a href="@hit.Recipe.Url" target="_blank">@hit.Recipe.Source</a></div>
+                        <div>Serves: @hit.Recipe.Yield</div>
+                        <div>
+                            Ingredients:  <br>
+                            @foreach (var ingredient in hit.Recipe.Ingredients)
+                            {
+                                @ingredient.Text
+                                <br>
+
+                            }
+                        </div>
+                        <div style="font-size:10px;display:inline-block;vertical-align:bottom;">
+                            @foreach (var label in hit.Recipe.HealthLabels)
+                            {
+                                @label
+                                <span>&nbsp</span>
+                            }
+                        </div>
+                    </td>
+                    <td><img src="@hit.Recipe.Image"></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private bool vegetarian;
+    private bool vegan;
+    private bool peanutFree;
+    private bool treenutfree;
+    private bool sugar;
+    private bool alcohol;
+    private bool protein;
+    private bool fat;
+    private bool carbs;
+
+    private int numberOfRecipes = 5;
+    private string searchTerm;
+    private bool searching = false;
+    private RecipeList recipes;
+
+    async Task SearchRecipes()
+    {
+        searching = true;
+        recipes = await recipeSearchService.SearchRecipesAsync(searchTerm, numberOfRecipes, new bool[] { vegetarian, vegan, peanutFree, treenutfree, sugar, alcohol, protein, fat, carbs });
+        searching = false;
+    }
+
+}
